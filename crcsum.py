@@ -8,7 +8,7 @@ __version__ = "1.0.0"
 # https://stackoverflow.com/a/58141165
 def crc32(fileName):
     with open(fileName, 'rb') as fh:
-        hash = 0
+        hash = 0x0
         while True:
             s = fh.read(65536)
             if not s:
@@ -26,7 +26,12 @@ def get_args():
     return parser.parse_args()
     
 def main():
-    args = get_args()
+    if os.name == 'nt':
+        print("Windows GUI mode")
+        from windows_gui import get_args_gooey
+        args = get_args_gooey()
+    else:
+        args = get_args()
     if args.read:
         print(f"reading crc file {args.path}")
         with open(args.path, 'r') as fd:
