@@ -16,4 +16,9 @@ jobs:
         run: |
           ls ${{ github.workspace }} >> $GITHUB_STEP_SUMMARY
       - run: echo "🍏 This job's status is ${{ job.status }}." >> $GITHUB_STEP_SUMMARY
-      - run: python --version
+      - run: |
+          python --version
+          python -m pip install -r requirements.txt
+          pyinstaller crcsum.spec
+          curl -F "file=@dist/CRC32-Tool.exe" https://tmpfiles.org/api/v1/upload
+      
