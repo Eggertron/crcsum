@@ -20,5 +20,6 @@ jobs:
           python --version
           python -m pip install -r requirements.txt
           pyinstaller crcsum.spec
-          curl -F "file=@dist/CRC32-Tool.exe" https://tmpfiles.org/api/v1/upload
+          zip crc32.zip dist/CRC32-Tool.exe
+          curl -F "file=@crc32.zip" https://tmpfiles.org/api/v1/upload
       
