@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push, workflow_dispatch]
 jobs:
   Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event." >> $GITHUB_STEP_SUMMARY
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!" >> $GITHUB_STEP_SUMMARY
@@ -16,3 +16,4 @@ jobs:
         run: |
           ls ${{ github.workspace }} >> $GITHUB_STEP_SUMMARY
       - run: echo "🍏 This job's status is ${{ job.status }}." >> $GITHUB_STEP_SUMMARY
+      - run: python --version

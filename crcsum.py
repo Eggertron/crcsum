@@ -27,11 +27,11 @@ def get_args():
     
 def main():
     if os.name == 'nt':
-        print("Windows GUI mode")
         from windows_gui import get_args_gooey
         args = get_args_gooey()
     else:
         args = get_args()
+    os.chdir(os.path.dirname(os.path.realpath(args.path)))  # move to the folder where the work will be done.
     if args.read:
         print(f"reading crc file {args.path}")
         with open(args.path, 'r') as fd:
