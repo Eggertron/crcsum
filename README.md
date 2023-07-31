@@ -29,3 +29,13 @@ You can easily reactive the `venv` workspace with the command
 Scripts\activate.bat
 ```
 
+## build executable
+
+### Windows
+
+Easy to build an executable. Just run the following command from within the
+build environment.
+
+```
+pyinstaller crcsum.spec
+```
