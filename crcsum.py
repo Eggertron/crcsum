@@ -7,6 +7,8 @@ __version__ = "1.0.0"
 
 # https://stackoverflow.com/a/58141165
 def crc32(fileName):
+    if not os.path.isfile(filename):
+        print(f"ERROR: {filename} is not a valid file.")
     with open(fileName, 'rb') as fh:
         hash = 0x0
         while True:
@@ -31,7 +33,9 @@ def main():
         args = get_args_gooey()
     else:
         args = get_args()
-    real_dirname = os.path.dirname(os.path.realpath(args.path))
+    real_dirname = os.path.realpath(args.path)
+    if not os.path.isdir(real_dirname):
+        real_dirname = os.path.dirname(real_dirname)
     # fix windows path
     #if os.name == 'nt':
     #    real_dirname = real_dirname.encode('unicode_escape')
@@ -65,7 +69,7 @@ def main():
                 "filename": path,
                 "crc": crc
             })
-        print(f"{crc} : {path}")
+    print(json.dumps(files, indent=4))
     if args.output:
         out_filepath = os.path.join(real_dirname, args.output)
         with open(out_filepath, 'w') as fd:
