@@ -7,8 +7,12 @@ __version__ = "1.0.0"
 
 # https://stackoverflow.com/a/58141165
 def crc32(fileName):
+    if not os.path.exists(fileName):
+        print(f"ERROR: {fileName} not found.")
+        return 0
     if not os.path.isfile(fileName):
         print(f"ERROR: {fileName} is not a valid file.")
+        return 0
     with open(fileName, 'rb') as fh:
         hash = 0x0
         while True:
@@ -62,6 +66,8 @@ def main():
     else:
         print(f"unknown file type {args.path}")
         return
+    files_total = len(full_paths)
+    files_count = 1
     for path in full_paths:
         if os.path.isfile(path):
             crc = crc32(path)
@@ -69,6 +75,8 @@ def main():
                 "filename": path,
                 "crc": crc
             })
+        print(f"Processed [{str(files_count)} / {str(files_total)}] ({str(files_count/files_total*100)}%)")
+        files_count += 1
     print(json.dumps(files, indent=4))
     if args.output:
         out_filepath = os.path.join(real_dirname, args.output)
