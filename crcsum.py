@@ -18,7 +18,7 @@ def crc32(fileName):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("path", help="path to crc; or json file to read")
+    parser.add_argument("path", help="path to crc; or json file to read; or file/folder to checksum.")
     parser.add_argument("-o", "--output", default=None, help="save output json")
     parser.add_argument("-r", "--read", action="store_true", default=False, help="reads a crc json file")
     parser.add_argument("-R", "--recursive", action="store_true", default=False, help="recursivly scan folders")
@@ -31,7 +31,11 @@ def main():
         args = get_args_gooey()
     else:
         args = get_args()
-    os.chdir(os.path.dirname(os.path.realpath(args.path)))  # move to the folder where the work will be done.
+    real_dirname = os.path.dirname(os.path.realpath(args.path))
+    # fix windows path
+    #if os.name == 'nt':
+    #    real_dirname = real_dirname.encode('unicode_escape')
+    os.chdir(real_dirname)  # move to the folder where the work will be done.
     if args.read:
         print(f"reading crc file {args.path}")
         with open(args.path, 'r') as fd:
@@ -45,13 +49,12 @@ def main():
         return
     files = []
     data = {"files":files, "version":__version__, "zlib_version":zlib.__version__}
-    if os.path.isfile(args.path):
+    if args.recursive:
+        full_paths = [os.path.join(dirpath,f) for (dirpath, dirnames, filenames) in os.walk('.') for f in filenames]
+    elif os.path.isfile(args.path):
         full_paths = [args.path]
     elif os.path.isdir(args.path):
-        if args.recursive:
-            full_paths = [os.path.join(dirpath,f) for (dirpath, dirnames, filenames) in os.walk(args.path) for f in filenames]
-        else:
-            full_paths = [os.path.join(args.path, p) for p in os.listdir(args.path)]
+        full_paths = [p for p in os.listdir() if not os.path.isdir(os.path.join(args.path, p))]
     else:
         print(f"unknown file type {args.path}")
         return
@@ -64,7 +67,8 @@ def main():
             })
         print(f"{crc} : {path}")
     if args.output:
-        with open(args.output, 'w') as fd:
+        out_filepath = os.path.join(real_dirname, args.output)
+        with open(out_filepath, 'w') as fd:
             if args.pretty_output:
                 fd.write(json.dumps(data, indent=4))
             else:
