@@ -7,8 +7,8 @@ __version__ = "1.0.0"
 
 # https://stackoverflow.com/a/58141165
 def crc32(fileName):
-    if not os.path.isfile(filename):
-        print(f"ERROR: {filename} is not a valid file.")
+    if not os.path.isfile(fileName):
+        print(f"ERROR: {fileName} is not a valid file.")
     with open(fileName, 'rb') as fh:
         hash = 0x0
         while True:
