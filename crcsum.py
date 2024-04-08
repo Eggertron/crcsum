@@ -80,6 +80,10 @@ def main():
     print(json.dumps(files, indent=4))
     if args.output:
         out_filepath = os.path.join(real_dirname, args.output)
+        if os.path.exists(out_filepath):
+            if input(f"The file path {out_filepath} already exists. Do you want to overwrite? (y/N) : ").lower() != 'y':
+                print("Cancelled.")
+                return
         with open(out_filepath, 'w') as fd:
             if args.pretty_output:
                 fd.write(json.dumps(data, indent=4))
