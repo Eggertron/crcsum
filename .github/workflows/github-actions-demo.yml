@@ -30,4 +30,4 @@ jobs:
           name: CRC32 Release Candidate ${{ github.ref_name }}
           tag_name: ${{ github.ref }}
         env:
-          GITHUB_TOKEN: ${{ secrets.FFMPEG_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
