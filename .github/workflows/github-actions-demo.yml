@@ -21,5 +21,13 @@ jobs:
           python -m pip install -r requirements.txt
           pyinstaller crcsum.spec
           Compress-Archive -Path dist/CRC32-Tool.exe -DestinationPath crc32.zip
-          curl -F "file=@crc32.zip" https://tmpfiles.org/api/v1/upload
-      
+
+      - name: Create Release Candidate
+        uses: softprops/action-gh-release@v2
+        with:
+          files: crc32.zip
+          prerelease: true
+          name: CRC32 Release Candidate ${{ github.ref_name }}
+          tag_name: ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.FFMPEG_RELEASE_TOKEN }}
