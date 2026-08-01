@@ -1,6 +1,10 @@
-name: GitHub Actions Demo
+name: Build Tag and Release
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push, workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*-rc*' # Triggers on tags like v1.0.0-rc1
 permissions:
   contents: write
 jobs:
@@ -28,8 +32,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: crc32.zip
-          prerelease: true
+          prerelease: false
           name: CRC32 Release Candidate ${{ github.ref_name }}
-          tag_name: ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
